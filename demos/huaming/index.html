@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#edf6fd" />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <meta name="description" content="凌动科技内部花名乐园互动体验，仅展示花名。" />
+    <title>凌动花名乐园｜完整 V2</title>
+    <link rel="icon" href="./favicon.svg" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./nicknames.js" defer></script>
+    <script src="./app.js" defer></script>
+  </head>
+  <body data-active-screen="park" data-park-skin="day">
+    <a class="skip-link" href="#mainContent">跳到主要内容</a>
+
+    <header class="topbar" aria-label="页面顶部">
+      <div class="topbar-inner">
+        <a class="brand" href="#park" data-screen-link="park" aria-label="返回凌动花名乐园">
+          <span class="brand-doorplate">凌动花名乐园</span>
+          <small>内部花名文化体验</small>
+        </a>
+
+        <nav class="desktop-nav" aria-label="主要导航">
+          <button class="is-active" type="button" data-screen="park">乐园导览</button>
+          <button type="button" data-screen="games">名堂游乐场</button>
+          <button type="button" data-screen="resident">居民卡</button>
+        </nav>
+
+        <div class="topbar-actions">
+          <button class="star-wallet" type="button" data-screen="games" aria-label="查看名堂星奖励">
+            <span>名堂星</span><strong id="headerStars">0</strong>
+          </button>
+          <button class="privacy-pill" id="privacyButton" type="button"><span aria-hidden="true"></span>仅展示花名</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="mainContent">
+      <section class="app-screen is-active" id="parkScreen" data-screen-panel="park" aria-labelledby="heroTitle">
+        <div class="section-wrap park-home">
+          <div class="park-intro">
+            <div>
+              <p class="eyebrow">凌动有名堂 · 花名文化体验</p>
+              <h1 id="heroTitle">欢迎进入凌动花名乐园</h1>
+              <p class="hero-lead">每个花名，都是认识彼此的一条新路。选一个园区，看看今天会遇见谁。</p>
+            </div>
+            <button class="explore-pill" id="exploreProgressButton" type="button" aria-label="查看已探索园区">
+              <span>探索进度</span><strong><b id="exploredCount">0</b>/8</strong>
+            </button>
+          </div>
+
+          <div class="park-layout">
+            <div class="map-panel" id="cityMapSection">
+              <div class="map-heading">
+                <span><small>花名导览 · 01</small><strong>花名乐园导览图</strong></span>
+                <span class="map-hint">点击园区开始探索</span>
+              </div>
+              <div class="city-map" id="cityMap" aria-label="八个花名主题园区">
+                <img
+                  class="park-map-art"
+                  id="parkMapArt"
+                  src="./assets/lingdong-nickname-park-map.webp"
+                  data-image-asset="map"
+                  alt="手绘花名乐园地图，包含花园、气象台、来客港、书院、公园、街坊、补给站和奇思妙想站"
+                />
+                <div class="district-layer" id="districtLayer"></div>
+                <div class="central-hub" aria-label="名堂广场"><strong>名堂广场</strong><span>猜名研究所 · 今日任务局 · 居民服务中心</span></div>
+                <div class="park-gate-sign" aria-hidden="true">花名乐园</div>
+              </div>
+            </div>
+
+            <aside class="park-sidebar" aria-label="乐园快捷入口">
+              <article class="side-card progress-card">
+                <p class="card-kicker">今日游园进度</p>
+                <div class="progress-number"><strong id="sidebarExploredCount">0</strong><span>/ 8 个园区</span></div>
+                <div class="progress-track" aria-hidden="true"><span id="exploreProgressBar"></span></div>
+                <p id="exploreProgressCopy">点亮第一个园区，收下你的探索印记。</p>
+              </article>
+
+              <button class="side-entry game-entry" type="button" data-screen="games">
+                <span class="entry-index">02</span>
+                <span><small>名堂游乐场</small><strong>花名猜猜看</strong><em>答题赢名堂星，解锁限定皮肤</em></span>
+              </button>
+
+              <button class="side-entry task-entry" type="button" data-screen="games" data-game-focus="daily">
+                <span class="entry-index">今日</span>
+                <span><small>每日限定</small><strong>今日任务局</strong><em>完成一件认识彼此的小事</em></span>
+              </button>
+
+              <button class="side-entry resident-entry" type="button" data-screen="resident">
+                <span class="entry-index">03</span>
+                <span><small>居民服务中心</small><strong>领取居民卡</strong><em>生成一张属于你的花名纪念卡</em></span>
+              </button>
+
+              <div class="sidebar-actions">
+                <button class="button button-primary" id="randomButton" type="button">随机遇见</button>
+                <button class="button button-secondary" id="searchJumpButton" type="button">搜索花名</button>
+              </div>
+            </aside>
+          </div>
+        </div>
+
+        <section class="directory section-wrap" id="directory" aria-labelledby="directoryTitle">
+          <div class="section-heading">
+            <div><p class="eyebrow">花名索引 · 02</p><h2 id="directoryTitle">所有花名</h2></div>
+            <p>也可以按园区、命名线路或关键词继续浏览；点击任意花名即可生成居民卡。</p>
+          </div>
+          <div class="directory-toolbar">
+            <label class="search-box" for="nicknameSearch">
+              <span class="search-label">搜索</span>
+              <input id="nicknameSearch" type="search" autocomplete="off" placeholder="输入花名，例如：可乐、长风……" />
+              <button id="clearSearchButton" type="button" aria-label="清空搜索">清空</button>
+            </label>
+            <button class="surprise-button" id="toolbarRandomButton" type="button">随机遇见</button>
+          </div>
+          <div class="filter-block" aria-labelledby="districtFilterLabel">
+            <div class="filter-label" id="districtFilterLabel"><span>主题园区</span><button id="clearFiltersButton" type="button">重置筛选</button></div>
+            <div class="chip-row" id="districtFilters" role="group" aria-label="按园区筛选"></div>
+          </div>
+          <div class="filter-block route-filter-block" aria-labelledby="routeFilterLabel">
+            <div class="filter-label" id="routeFilterLabel"><span>命名线路</span><small>一个花名可以同时经过多条线路</small></div>
+            <div class="chip-row route-chips" id="routeFilters" role="group" aria-label="按线路筛选"></div>
+          </div>
+          <div class="result-bar" aria-live="polite"><p id="resultSummary">正在载入花名……</p><span id="activeFilterSummary">全部园区 · 全部线路</span></div>
+          <div class="nickname-grid" id="nicknameGrid"></div>
+          <div class="load-more-wrap"><button class="button button-more" id="loadMoreButton" type="button">继续逛一会儿</button></div>
+          <div class="empty-state" id="emptyState" hidden>
+            <h3>这里暂时没有找到</h3><p>换一个关键词或清空筛选再看看。</p>
+            <button class="button button-secondary" id="emptyResetButton" type="button">查看全部花名</button>
+          </div>
+        </section>
+
+        <section class="city-note section-wrap" aria-labelledby="cityNoteTitle">
+          <div class="note-number">03</div>
+          <div><p class="eyebrow">花名乐园持续生长中</p><h2 id="cityNoteTitle">每一个新花名，都会让乐园多一种风景。</h2></div>
+          <p>本页为内部体验版，仅展示花名与内容分类，不包含真实姓名、部门、工号及在离职信息。探索和奖励进度只保存在当前浏览器中。</p>
+        </section>
+      </section>
+
+      <section class="app-screen" id="gamesScreen" data-screen-panel="games" aria-labelledby="gamesTitle" hidden>
+        <div class="section-wrap feature-page">
+          <div class="feature-heading">
+            <div><p class="eyebrow">名堂游乐场 · 02</p><h1 id="gamesTitle">今天，来玩点“有名堂”的</h1><p>猜花名、接任务、攒名堂星。每一次互动，都会让乐园多亮一点。</p></div>
+            <div class="feature-wallet"><span>我的名堂星</span><strong id="gamesStars">0</strong><small>进度仅保存在当前浏览器</small></div>
+          </div>
+
+          <div class="game-layout">
+            <article class="game-card guess-game" id="guessGameCard">
+              <div class="game-card-head">
+                <div><p class="card-kicker">猜名研究所</p><h2>花名猜猜看</h2><p>根据三条线索，从四个花名中找到正确答案。</p></div>
+                <div class="round-score"><span>连续答对</span><strong id="guessStreak">0</strong></div>
+              </div>
+
+              <div class="clue-board" id="clueBoard" aria-label="本轮线索">
+                <span id="guessClueDistrict">正在准备园区线索</span>
+                <span id="guessClueLength">正在计算花名字数</span>
+                <span id="guessClueRoute">正在寻找命名线路</span>
+              </div>
+
+              <div class="guess-prompt"><span id="guessRoundLabel">第 1 题</span><h3>这个花名是谁？</h3></div>
+              <div class="guess-options" id="guessOptions" role="group" aria-label="花名选项"></div>
+              <div class="guess-feedback" id="guessFeedback" aria-live="polite" hidden>
+                <div><strong id="guessFeedbackTitle"></strong><p id="guessFeedbackCopy"></p></div>
+                <button class="button button-primary" id="nextGuessButton" type="button">下一题</button>
+              </div>
+              <p class="game-rule">首次选对 +10 名堂星；答错后再选对 +5 名堂星。</p>
+            </article>
+
+            <article class="game-card daily-game" id="dailyTaskCard">
+              <div class="daily-date"><span id="dailyMonthDay"></span><small id="dailyWeekday"></small></div>
+              <p class="card-kicker">今日任务局</p>
+              <h2 id="dailyTaskTitle">今日任务正在派送</h2>
+              <p class="daily-description" id="dailyTaskDescription"></p>
+              <div class="daily-action" id="dailyTaskAction"></div>
+              <div class="daily-reward"><span>完成奖励</span><strong>+15 名堂星</strong></div>
+              <button class="button button-primary" id="completeDailyButton" type="button">完成任务并领取</button>
+              <p class="daily-status" id="dailyTaskStatus" aria-live="polite"></p>
+            </article>
+          </div>
+
+          <section class="rewards-section" aria-labelledby="rewardsTitle">
+            <div class="rewards-heading">
+              <div><p class="eyebrow">乐园奖励所</p><h2 id="rewardsTitle">把名堂星换成限定风景</h2></div>
+              <p>奖励达到门槛后会自动解锁，已获得内容会保存在当前浏览器。</p>
+            </div>
+            <div class="reward-progress">
+              <div class="reward-track"><span id="rewardProgressBar"></span><i class="reward-mark mark-30">30</i><i class="reward-mark mark-60">60</i></div>
+              <p><strong id="rewardStars">0</strong> / 60 名堂星</p>
+            </div>
+            <div class="reward-grid">
+              <article class="reward-card" id="neonSkinReward">
+                <img src="./assets/resident-card-neon.webp" data-image-asset="neon" alt="霓虹梦境全园夜游模式预览" />
+                <div><span class="reward-cost">30 名堂星</span><h3>霓虹梦境夜游模式</h3><p>让导览、游乐场与居民卡中心一同进入夜游。</p><button class="button button-secondary reward-action" id="toggleNeonSkinButton" type="button" disabled>尚未解锁</button></div>
+              </article>
+              <article class="reward-card" id="dreamCardReward">
+                <img src="./assets/resident-card-day.webp" data-image-asset="day" alt="限定居民卡预览" />
+                <div><span class="reward-cost">60 名堂星</span><h3>星夜限定居民卡</h3><p>生成一张霓虹梦境收藏卡面。</p><button class="button button-secondary reward-action" id="useDreamCardButton" type="button" disabled>尚未解锁</button></div>
+              </article>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="app-screen" id="residentScreen" data-screen-panel="resident" aria-labelledby="residentTitle" hidden>
+        <div class="section-wrap feature-page resident-page">
+          <div class="feature-heading">
+            <div><p class="eyebrow">居民服务中心 · 03</p><h1 id="residentTitle">领取你的花名居民卡</h1><p>选择花名与已解锁卡面，生成一张可以长按保存、下载或分享的乐园纪念卡。</p></div>
+            <div class="resident-privacy"><strong>只写花名</strong><span>不含真实姓名、部门、工号与人事信息</span></div>
+          </div>
+
+          <div class="resident-layout">
+            <div class="resident-controls">
+              <section class="control-card">
+                <p class="control-step">01 · 选择花名</p>
+                <label class="resident-search" for="residentSearch">
+                  <span>搜索</span><input id="residentSearch" type="search" autocomplete="off" placeholder="输入你的花名" />
+                </label>
+                <div class="resident-search-results" id="residentSearchResults" aria-live="polite"></div>
+                <button class="text-button" id="randomResidentButton" type="button">不知道选什么？随机生成一张</button>
+              </section>
+
+              <section class="control-card">
+                <p class="control-step">02 · 选择卡面</p>
+                <div class="theme-options" role="group" aria-label="居民卡卡面">
+                  <button class="theme-option is-active" type="button" data-card-theme="day" aria-pressed="true">
+                    <img src="./assets/resident-card-day.webp" data-image-asset="day" alt="白昼乐园卡面" /><span><strong>白昼乐园</strong><small>默认卡面</small></span>
+                  </button>
+                  <button class="theme-option is-locked" id="dreamThemeOption" type="button" data-card-theme="dream" aria-pressed="false">
+                    <img src="./assets/resident-card-neon.webp" data-image-asset="neon" alt="星夜梦境卡面" /><span><strong>星夜梦境</strong><small id="dreamThemeStatus">60 星解锁</small></span>
+                  </button>
+                </div>
+              </section>
+
+              <section class="control-card resident-summary-card">
+                <p class="control-step">03 · 保存分享</p>
+                <div><span>当前花名</span><strong id="selectedResidentName">尚未选择</strong></div>
+                <div><span>所属园区</span><strong id="selectedResidentDistrict">等待花名入园</strong></div>
+                <p>卡片只会写入花名、园区与命名线路。</p>
+              </section>
+            </div>
+
+            <div class="resident-preview-area">
+              <div class="resident-card-frame" id="residentCardFrame">
+                <img id="passportImage" alt="花名居民卡预览" />
+                <canvas id="passportCanvas" width="1080" height="1350" hidden></canvas>
+                <div class="resident-empty-preview" id="residentEmptyPreview">
+                  <strong>你的花名<br />会在这里亮相</strong><p>先在左侧或上方搜索并选择一个花名。</p>
+                </div>
+              </div>
+              <div class="resident-actions">
+                <button class="button button-primary" id="downloadPassportButton" type="button" disabled>保存居民卡</button>
+                <button class="button button-secondary" id="sharePassportButton" type="button" disabled>分享给同事</button>
+              </div>
+              <p class="save-tip">移动端也可以长按卡片图片保存；分享能力取决于当前浏览器。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p><strong>凌动有名堂 · 花名乐园</strong><span>内部文化体验版 · 2026</span></p><button type="button" data-screen="park">返回乐园导览</button>
+    </footer>
+
+    <nav class="mobile-dock" aria-label="移动端快捷导航">
+      <button class="is-active" type="button" data-screen="park"><span>01</span>导览</button>
+      <button type="button" data-screen="games"><span>02</span>游乐场</button>
+      <button type="button" data-screen="resident"><span>03</span>居民卡</button>
+    </nav>
+
+    <dialog class="district-dialog" id="districtDialog" aria-labelledby="districtDialogTitle">
+      <form method="dialog" class="dialog-close-form"><button class="dialog-close" aria-label="关闭园区名单">关闭</button></form>
+      <div class="district-dialog-head">
+        <span class="district-dialog-icon" id="districtDialogIcon" aria-hidden="true"></span>
+        <div><p class="eyebrow">正在探索</p><h2 id="districtDialogTitle">主题园区</h2><p id="districtDialogCaption"></p></div>
+      </div>
+      <label class="dialog-search" for="districtDialogSearch"><span>搜索</span><input id="districtDialogSearch" type="search" autocomplete="off" placeholder="在这个园区搜索花名" /></label>
+      <p class="district-dialog-summary" id="districtDialogSummary"></p>
+      <div class="district-name-list" id="districtNameList"></div>
+      <div class="dialog-list-empty" id="dialogListEmpty" hidden>没有找到这个花名，换个关键词试试。</div>
+      <button class="button button-primary district-dialog-all" id="viewDistrictButton" type="button">查看园区完整索引</button>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

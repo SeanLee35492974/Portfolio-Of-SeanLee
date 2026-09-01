@@ -22,6 +22,36 @@
     });
   });
 
+  const lazyVideos = document.querySelectorAll('video[data-lazy-video]');
+  if (lazyVideos.length) {
+    const loadVideo = (video) => {
+      const source = video.querySelector('source[data-src]');
+      if (source && !source.getAttribute('src')) {
+        source.src = source.dataset.src;
+        video.load();
+      }
+    };
+    if ('IntersectionObserver' in window) {
+      const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target;
+          if (entry.isIntersecting) {
+            loadVideo(video);
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      }, { rootMargin: '280px 0px', threshold: 0.02 });
+      lazyVideos.forEach((video) => videoObserver.observe(video));
+    } else {
+      lazyVideos.forEach((video) => {
+        loadVideo(video);
+        video.play().catch(() => {});
+      });
+    }
+  }
+
   document.querySelectorAll('[data-copy]').forEach((button) => {
     button.addEventListener('click', async () => {
       const value = button.getAttribute('data-copy');
